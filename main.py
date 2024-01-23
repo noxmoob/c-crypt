@@ -1,16 +1,25 @@
-import os
+from flask import Flask, render_template, request
 import pyaes
 import hashlib
 
-passphrase = input('enter the pass key: ')
+app = Flask(__name__)
 
-key = hashlib.sha256(passphrase.encode('utf-8')).digest()
+def encrypt_data(passphrase):
+    key = hashlib.sha256(passphrase.encode('utf-8')).digest()
+    aes = pyaes.AESModeOfOperationCTR(key)
+    plaintext = b'test'
+    result = aes.encrypt(plaintext)
+    return result
 
-# Use the key for AES in CTR mode
-aes = pyaes.AESModeOfOperationCTR(key)
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    encrypted_result = None
 
-# Encrypt the data
-plaintext = b'test'
-result = aes.encrypt(plaintext)
+    if request.method == 'POST':
+        passphrase = request.form['passphrase']
+        encrypted_result = encrypt_data(passphrase)
 
-print(result)
+    return render_template('index.html', encrypted_result=encrypted_result)
+
+if __name__ == '__main__':
+    app.run(debug=True)
