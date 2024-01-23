@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passphrase Encryptor</title>
+</head>
+<body>
+    <h1>Passphrase Encryptor</h1>
+    <form method="post">
+        <label for="passphrase">Enter Passphrase:</label>
+        <input type="text" name="passphrase" required>
+        <button type="submit">Encrypt</button>
+    </form>
+    
+    {% if encrypted_result %}
+    <div>
+        <p>Encrypted Result:</p>
+        <code>{{ encrypted_result }}</code>
+    </div>
+    {% endif %}
+</body>
+</html>
